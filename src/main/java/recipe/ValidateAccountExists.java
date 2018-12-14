@@ -1,3 +1,5 @@
+package recipe;
+
 import com.ing.baker.recipe.annotations.*;
 import javax.inject.Named;
 
@@ -10,5 +12,5 @@ public interface ValidateAccountExists {
     class AccountNonExistent implements Outcome { }
 
     @FiresEvent(oneOf = {AccountExistent.class, AccountNonExistent.class})
-    Outcome apply(@ProcessId String processId);
+    Outcome apply();
 }

@@ -1,3 +1,5 @@
+package recipe
+
 import com.ing.baker.recipe.scaladsl.Ingredient
 
 object Ingredients {
@@ -24,6 +26,6 @@ object Ingredients {
     Ingredient[CandidateDossier]("candidateDossier")
 
   val vacancyApplication: Ingredient[VacancyApplication] =
-    Ingredient[VacancyApplication]("vacancyAppplication")
+    Ingredient[VacancyApplication]("vacancyApplication")
 
 }

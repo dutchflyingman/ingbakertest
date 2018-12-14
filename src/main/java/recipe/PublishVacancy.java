@@ -1,3 +1,5 @@
+package recipe;
+
 import com.ing.baker.recipe.annotations.*;
 import javax.inject.Named;
 
@@ -8,5 +10,5 @@ public interface PublishVacancy {
     class VacancyCreated implements Outcome { }
 
     @FiresEvent(oneOf = {VacancyCreated.class})
-    Outcome apply(@ProcessId String processId);
+    Outcome apply(@Named("talentRequest") Ingredients.TalentRequest talentRequest);
 }

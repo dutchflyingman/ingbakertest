@@ -1,18 +1,15 @@
-import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths}
-import java.util.concurrent.Future
-
-import com.ing.baker.compiler.RecipeCompiler
-import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
-import Recipes._
 import akka.actor.ActorSystem
+import com.ing.baker.compiler.RecipeCompiler
 import com.ing.baker.il.CompiledRecipe
 import com.ing.baker.runtime.core.{Baker, SensoryEventStatus}
-import org.scalatest.concurrent.ScalaFutures
-import Interactions._
+import helpers.DotVisualizationHelper
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
+import recipe.Ingredients
+import runtime.EventImplementations
+import runtime.InteractionImplementations._
 
-import scala.concurrent.duration._
 import scala.concurrent.Await
+import scala.concurrent.duration._
 
 class BakerSpec extends FlatSpec with Matchers with BeforeAndAfterAll{
 
@@ -26,7 +23,7 @@ class BakerSpec extends FlatSpec with Matchers with BeforeAndAfterAll{
   }
 
   lazy val compiledRecipe : CompiledRecipe =
-    RecipeCompiler.compileRecipe(humanResourcesRecipe)
+    RecipeCompiler.compileRecipe(recipe.Recipes.humanResourcesRecipe)
 
 
 
@@ -56,9 +53,13 @@ class BakerSpec extends FlatSpec with Matchers with BeforeAndAfterAll{
     ))
     baker.addRecipe(compiledRecipe)
 
+    val processId = "abc"
 
-    baker.bake("abc", "def", 10.seconds)
-    baker.processEvent("abc", Events.talentRequestFinalized) shouldBe SensoryEventStatus.Completed
+    baker.bake(compiledRecipe.recipeId, processId, 10.seconds)
+    baker.processEvent(processId, EventImplementations.CandidateDossierCreated(Ingredients.CandidateDossier(12))) shouldBe SensoryEventStatus.Completed
+    baker.processEvent(processId, EventImplementations.TalentRequestFinalized(Ingredients.TalentRequest(1234))) shouldBe SensoryEventStatus.Completed
+
+    DotVisualizationHelper.writeSvgFile(baker.getVisualState(processId), "C:/tmp/visualstate.svg")
   }
 
 }

@@ -1,5 +1,7 @@
+package recipe
+
 import com.ing.baker.recipe.scaladsl.Event
-import Ingredients._
+import recipe.Ingredients._
 
 object Events {
   val talentRequestFinalized = Event("TalentRequestFinalized", talentRequest)

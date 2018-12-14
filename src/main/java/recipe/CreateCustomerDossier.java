@@ -1,3 +1,5 @@
+package recipe;
+
 import com.ing.baker.recipe.annotations.*;
 import javax.inject.Named;
 
@@ -7,5 +9,5 @@ public interface CreateCustomerDossier {
     class CustomerDossierCreated implements Outcome { }
 
     @FiresEvent(oneOf = {CustomerDossierCreated.class})
-    Outcome apply(@ProcessId String processId);
+    Outcome apply();
 }
